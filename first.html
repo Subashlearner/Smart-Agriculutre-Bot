@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-இயக்கப்பட்ட வேளாண்மை சாட்பாட் - அக்ரோஅசிஸ்ட்</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f7f9fc;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c7a7b;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #4a5568;
+            font-size: 20px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 8px;
+        }
+
+        p {
+            margin: 15px 0;
+            line-height: 1.6;
+            font-size: 16px;
+            color: #5a5a5a;
+        }
+
+        ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+            color: #4a5568;
+            font-size: 16px;
+        }
+
+        /* Button Grid Layout */
+        .input-section {
+            margin-bottom: 25px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .input-section .btn {
+            width: 48%; /* Two buttons per row */
+            background-color: #2c7a7b;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .input-section .btn:hover {
+            background-color: #285e61;
+        }
+
+        .voice-section, .output-section {
+            margin-top: 30px;
+        }
+
+        .output-section {
+            padding: 20px;
+            background-color: #f0fff4;
+            border-left: 5px solid #48bb78;
+            border-radius: 8px;
+        }
+
+        .output-section p {
+            font-size: 18px;
+            font-weight: 500;
+            color: #2f855a;
+        }
+
+        .container h3 {
+            font-size: 18px;
+            color: #2c7a7b;
+            margin-top: 20px;
+        }
+        
+        #top
+        {
+            color:#333;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .input-section .btn {
+                width: 100%; /* Full width on smaller screens */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <center><img src="C:\Users\lucif\Downloads\g.png" alt="loading" length="100px" width="100px"></center>
+        <h1 id="top">அரசு தொழில்நுட்பக் கல்லூரி, கோயம்புத்தூர்-641013</h1>
+        <h1 id="top">மின்னணுவியல் மற்றும் தொடர்பாடல் பொறியியல் துறை</h1>
+        <br>
+        <h1>விவசாயிகளுக்கான ஸ்மார்ட் தகவல் மற்றும் கண்காணிப்பு அமைப்பு</h1>
+        
+        <p>அக்ரோஅசிஸ்ட் என்பது விவசாயிகளின் குறிப்பிட்ட தேவைகளை பூர்த்தி செய்ய வடிவமைக்கப்பட்ட முன்னணி சாட்பாட் தொழில்நுட்பமாகும். இது இயற்கை மொழி செயலாக்கம் (NLP) மற்றும் இயந்திர கற்றல் திறன்களைப் பயன்படுத்தி விவசாயிகளுக்கு தனிப்பயனான உதவி, நேரடி தகவல் மற்றும் சமூக ஆதரவை வழங்குகிறது.</p>
+
+        <!-- Input Buttons -->
+        <div class="input-section">
+            <button id="voiceInput" class="btn">குரல் உள்ளீடு</button>
+            <button id="schemeButton" class="btn">அரசு திட்டங்கள்</button>
+            <button id="soilButton" class="btn">மண் தகவல்கள்</button>
+            <button id="weatherButton" class="btn">வானிலை தகவல்கள்</button>
+            <button id="SeedButton" class="btn">விதை தகவல்கள்</button>
+            <button id="FertilizerButton" class="btn">உரம்</button>
+        </div>
+
+        <!-- Voice Assistant Section -->
+        <div class="voice-section" id="voiceSection" style="display: none;">
+            <h2>உங்கள் கோரிக்கையை பேசவும்:</h2>
+            <button id="startVoice" class="btn">பேசத் தொடங்கவும்</button>
+            <p id="voiceStatus">குரல் உள்ளீட்டிற்காக காத்திருக்கிறது...</p>
+        </div>
+
+        <!-- Output Section -->
+        <div class="output-section">
+            <h2>பரிந்துரைகள் மற்றும் தகவல்கள்</h2>
+            <p id="outputText">உங்கள் கோரிக்கைகள் இங்கே தோன்றும்.</p>
+        </div>
+
+        <h2>அக்ரோஅசிஸ்ட் பற்றி</h2>
+        
+        <p>அக்ரோஅசிஸ்ட் சாட்பாட் விவசாயிகளுக்கு கிடைக்கும் பல்வேறு கடன்கள் மற்றும் திட்டங்கள் பற்றிய தகவல்களை வழங்குவதற்காக வடிவமைக்கப்பட்டுள்ளது. இது இயந்திர கற்றல், AI, இயற்கை மொழி செயலாக்கம் மற்றும் நிரலாக்க முறைமைகளைப் பயன்படுத்துகிறது.</p>
+
+        <h3>முக்கிய அம்சங்கள்:</h3>
+        
+        <ul>
+            <li>பயிர் தேர்வு மற்றும் வேளாண்மை பயிற்சிகளுக்கான தனிப்பயனான உதவி.</li>
+            <li>அரசு திட்டங்கள் மற்றும் மண் ஆரோக்கியம் பற்றிய நேரடி தகவல்கள்.</li>
+            <li>வானிலை முன்னறிவிப்புகள் மற்றும் அறிவுறுத்தல்கள்.</li>
+            <li>பல மொழி ஆதரவு மற்றும் குரல் அடிப்படையிலான உரையாடலுடன் பயனர் நட்பு இடைமுகம்.</li>
+        </ul>
+
+    </div>
+
+    <script>
+        // Handling input mode selection
+        document.getElementById('voiceInput').addEventListener('click', () => {
+            document.getElementById('voiceSection').style.display = 'block';
+        });
+
+        document.getElementById('schemeButton').addEventListener('click', () => {
+            document.getElementById('outputText').innerText = 'அரசு திட்டங்கள் பற்றிய தகவல்களை பெறுகிறோம்...';
+        });
+
+        document.getElementById('soilButton').addEventListener('click', () => {
+            document.getElementById('outputText').innerText = 'மண் ஆரோக்கிய தகவல்களை வழங்குகிறோம்...';
+        });
+
+        document.getElementById('weatherButton').addEventListener('click', () => {
+            document.getElementById('outputText').innerText = 'வானிலை முன்னறிவிப்பை பெறுகிறோம்...';
+        });
+
+        // Simulating voice input (could be integrated with Web Speech API for real voice recognition)
+        document.getElementById('startVoice').addEventListener('click', () => {
+            document.getElementById('voiceStatus').innerText = 'கேட்கிறது... (செயற்கை模拟)';
+            setTimeout(() => {
+                document.getElementById('voiceStatus').innerText = 'குரல் தரவு பெறப்பட்டது.';
+                document.getElementById('outputText').innerText = 'உங்கள் கோரிக்கையை செயலாக்குகிறோம்...';
+            }, 2000); // Simulated delay for voice processing
+        });
+    </script>
+</body>
+</html>
