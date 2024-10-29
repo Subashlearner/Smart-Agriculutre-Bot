@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroBot - உரங்கள்</title>
+    <link rel="icon" href="favicon.jpg" type="image/png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #e6ffe6; /* Light green background */
+            color: #333;
+        }
+        .fertilizer-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .fertilizer-item {
+            width: 200px;
+            cursor: pointer;
+            border: 2px solid #ccc;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            transition: box-shadow 0.3s, transform 0.3s;
+        }
+        .fertilizer-item:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transform: scale(1.05);
+        }
+        .fertilizer-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        .buttons button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 5px;
+            cursor: pointer;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .buttons button:hover {
+            background-color: #007700; /* Dark green on hover */
+        }
+        .explanation-button {
+            background-color: #4CAF50; /* Green */
+        }
+        .back-button {
+            background-color: #FF0000; /* Darker green */
+        }
+        /* Red color for strong (tag) text */
+        .fertilizer-item p strong {
+            font-weight: bold;
+            color: #2F4F2F; /* Dark green for headings */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>உர வகைகள் மற்றும் விவரங்கள்</h1>
+        <p>உரங்கள் பயிரின் நல்ல வளர்ச்சிக்கு தேவையான சத்துக்களை வழங்குகின்றன. சில முக்கியமான உரங்களை பற்றி கீழே அறியலாம்.</p>
+    </header>
+
+    <section class="fertilizer-container">
+        <!-- Fertilizer 1 -->
+        <div class="fertilizer-item" onclick="playAudio('fertilizer1-audio')">
+            <img src="sample20.jpg" alt="நைட்ரஜன் உரம்">
+            <p><strong>நைட்ரஜன் உரம்</strong><br>
+                <strong>சிறப்பு பயிர்கள்:</strong> அரிசி, கோதுமை, சர்க்கரைவள்ளி<br>
+                <strong>சிறப்பு:</strong> செடியின் இலை வளர்ச்சியை ஊக்குவிக்கிறது.</p>
+            <audio id="fertilizer1-audio" src="nitro.mp3"></audio>
+        </div>
+        <!-- Fertilizer 2 -->
+        <div class="fertilizer-item" onclick="playAudio('fertilizer2-audio')">
+            <img src="sample21.jpg" alt="பொட்டாசியம் உரம்">
+            <p><strong>பொட்டாசியம் உரம்</strong><br>
+                <strong>சிறப்பு பயிர்கள்:</strong> வாழை, உருளைக்கிழங்கு, காபி<br>
+                <strong>சிறப்பு:</strong> செடியின் நோய் எதிர்ப்பு சக்தியை அதிகரிக்கிறது</p>
+            <audio id="fertilizer2-audio" src="potash.mp3"></audio>
+        </div>
+        <!-- Fertilizer 3 -->
+        <div class="fertilizer-item" onclick="playAudio('fertilizer3-audio')">
+            <img src="sample22.jpg" alt="மிக்சு உரம்">
+            <p><strong>மிக்சு உரம்</strong><br>
+                <strong>சிறப்பு பயிர்கள்:</strong> மகசூல் அதிகரிக்க விரும்பும் அனைத்து பயிர்களுக்கும்<br>
+                <strong>சிறப்பு:</strong> பல்வேறு ஊட்டச்சத்துக்களை ஒரே நேரத்தில் வழங்குகிறது</p>
+            <audio id="fertilizer3-audio" src="mix.mp3"></audio>
+        </div>
+        <!-- Fertilizer 4 -->
+        <div class="fertilizer-item" onclick="playAudio('fertilizer4-audio')">
+            <img src="sample23.jpg" alt="உயிர்ப்பொருள் உரம்">
+            <p><strong>உயிர்ப்பொருள் உரம்</strong><br>
+                <strong>சிறப்பு பயிர்கள்:</strong> மரக்கன்றுகள், காய்கறிகள், பழக்கன்றுகள்<br>
+                <strong>சிறப்பு:</strong> மண் வளத்தை அதிகரிக்கவும், நீர் ஈரத்தை மேம்படுத்தவும் பயன்படுகிறது.</p>
+            <audio id="fertilizer4-audio" src="bio.mp3"></audio>
+        </div>
+    </section>
+
+    <div class="buttons">
+        <button class="explanation-button" onclick="playExplanationAudio()">விளக்கம்</button>
+        <button class="back-button" onclick="goBack()">முந்தைய பக்கம்</button>
+    </div>
+
+    <!-- Explanation Audio -->
+    <audio id="explanation-audio" src="ferti.mp3"></audio>
+
+    <script>
+        let currentAudio = null;
+
+        function playAudio(id) {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+            }
+            currentAudio = document.getElementById(id);
+            currentAudio.play();
+        }
+
+        function playExplanationAudio() {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+            }
+            currentAudio = document.getElementById("explanation-audio");
+            currentAudio.play();
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+</html>

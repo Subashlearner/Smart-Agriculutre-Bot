@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroBot - மண் வகைகள்</title>
+    <link rel="icon" href="favicon.jpg" type="image/png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #e6ffe6; /* Light green background */
+            color: #333;
+        }
+        .seed-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .seed-item {
+            width: 200px;
+            cursor: pointer;
+            border: 2px solid #ccc;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            transition: box-shadow 0.3s, transform 0.3s;
+        }
+        .seed-item:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transform: scale(1.05);
+        }
+        .seed-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        .buttons button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 5px;
+            cursor: pointer;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .buttons button:hover {
+            background-color: #007700; /* Dark green on hover */
+        }
+        .explanation-button {
+            background-color: #4CAF50; /* Green */
+        }
+        .back-button {
+            background-color: #FF0000; /* Red */
+        }
+        .seed-item p strong {
+            font-weight: bold;
+            color: #2F4F2F; /* Dark green for headings */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>விவசாய மண் வகைகள்</h1>
+        <p>நீங்கள் ஒவ்வொரு மண் வகைப் படத்தைத் தொடும் போது, அதற்கான ஒலி இயக்கப்படும்.</p>
+    </header>
+
+    <section class="seed-container">
+        <!-- Seed Type 1 -->
+        <div class="seed-item" onclick="playAudio('seed1-audio')">
+            <img src="sample10.jpg" alt="சிவப்பு மண்">
+            <strong>சிவப்பு மண்</strong><br>
+                <strong>ஈரப்பதம் தக்கவைப்பு:</strong> மிதமானது முதல் குறைவு வரை (விரைவாக நீரை வடிகட்டும்)<br>
+                <strong>பயிர்கள்:</strong> பருத்தி, நிலக்கடலை, பருப்பு வகைகள்<br>
+                <strong>உரம்:</strong> உயிர்ம பசளை, பாஸ்பரஸ் நிறைந்த உரம்.
+            <audio id="seed1-audio" src="redsoil.mp3"></audio>
+        </div>
+        <!-- Seed Type 2 -->
+        <div class="seed-item" onclick="playAudio('seed2-audio')">
+            <img src="sample11.jpg" alt="கருப்பு மண்">
+            <strong>கருப்பு மண்</strong><br>
+                <strong>ஈரப்பதம் தக்கவைப்பு:</strong> மிகவும் அதிகம் (நீண்ட நேரம் ஈரப்பதத்தை தக்கவைக்கும்)<br>
+                <strong>பயிர்கள்:</strong> பருத்தி, சோயா பீன், சூரியகாந்தி<br>
+                <strong>உரம்:</strong> நைட்ரஜன் மற்றும் பாஸ்பரஸ் நிறைந்த உரங்கள், பசளை.
+            <audio id="seed2-audio" src="blacksoil.mp3"></audio>
+        </div>
+    
+    
+    </section>
+
+    <div class="buttons">
+        <button class="explanation-button" onclick="playExplanationAudio()">விளக்கம்</button>
+        <button class="back-button" onclick="goBack()">முந்தைய பக்கம்</button>
+    </div>
+
+    <!-- Explanation Audio -->
+    <audio id="explanation-audio" src="soil.mp3"></audio>
+
+    <script>
+        let currentAudio = null;
+
+        function playAudio(id) {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+            }
+            currentAudio = document.getElementById(id);
+            currentAudio.play();
+        }
+
+        function playExplanationAudio() {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+            }
+            currentAudio = document.getElementById("explanation-audio");
+            currentAudio.play();
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+</html>

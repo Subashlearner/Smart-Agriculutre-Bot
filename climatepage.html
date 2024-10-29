@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroBot - வானிலை மற்றும் பயிர்கள்</title>
+    <link rel="icon" href="favicon.jpg" type="image/png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e0f7e9; /* Light green background */
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .content {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .climate-info {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #555;
+            margin-top: 15px;
+        }
+
+        .crop-recommendation {
+            font-size: 20px;
+            color: #2e7d32;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .crop-image-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+            gap: 15px; /* Adjusted gap between images */
+        }
+
+        .crop-image {
+            width: 28%; /* Adjusted image size */
+            border-radius: 8px;
+            display: none;
+            height: 200px;
+        }
+
+        .audio-button {
+            background-color: #2e7d32;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .back-button {
+            background-color: #FF0000;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>வானிலை நிலை மற்றும் பரிந்துரைக்கப்பட்ட பயிர்கள்</h1>
+    <div class="content">
+        <!-- Display the Tamil month -->
+        <p id="tamilMonth" class="climate-info"></p>
+        <!-- Display climate condition based on month -->
+        <p id="climateCondition" class="climate-info"></p>
+        <!-- Display crop recommendations based on month -->
+        <p id="cropRecommendation" class="crop-recommendation"></p>
+        <!-- Display crop images -->
+        <div class="crop-image-container">
+            <img id="cropImage1" class="crop-image" alt="Crop Image 1">
+            <img id="cropImage2" class="crop-image" alt="Crop Image 2">
+            <img id="cropImage3" class="crop-image" alt="Crop Image 3">
+        </div>
+        <!-- Audio control for month explanation -->
+        <button class="audio-button" onclick="playMonthAudio()"> விளக்கம்</button>
+        <audio id="monthAudio"></audio>
+        <!-- Back button -->
+        <button class="back-button" onclick="history.back()">மீண்டும் செல்ல</button>
+    </div>
+
+    <script>
+        const tamilMonths = [
+            { name: "சித்திரை", startDay: 14, startMonth: 3 },
+            { name: "வைகாசி", startDay: 14, startMonth: 4 },
+            { name: "ஆனி", startDay: 15, startMonth: 5 },
+            { name: "ஆடி", startDay: 16, startMonth: 6 },
+            { name: "ஆவணி", startDay: 17, startMonth: 7 },
+            { name: "புரட்டாசி", startDay: 17, startMonth: 8 },
+            { name: "ஐப்பசி", startDay: 17, startMonth: 9 },
+            { name: "கார்த்திகை", startDay: 16, startMonth: 10 },
+            { name: "மார்கழி", startDay: 15, startMonth: 11 },
+            { name: "தை", startDay: 14, startMonth: 0 },
+            { name: "மாசி", startDay: 13, startMonth: 1 },
+            { name: "பங்குனி", startDay: 14, startMonth: 2 }
+        ];
+
+        const monthData = [
+            {
+                monthIndex: 0,
+                climate: "சராசரி குளிர்ந்த காலநிலை.",
+                crops: "கோதுமை, குதிரைவாலி, சோளம்",
+                images: ["wheat1.jpg", "wheat2.jpg", "wheat3.jpg"],
+                audio: "january.mp3"
+            },
+            {
+                monthIndex: 1,
+                climate: "சராசரி குளிர்ந்த காலநிலை மற்றும் சிறிய மழை.",
+                crops: "சோளம், கொள்ளு, பாசி",
+                images: ["barley1.jpg", "barley2.jpg", "barley3.jpg"],
+                audio: "february.mp3"
+            },
+            {
+                monthIndex: 2,
+                climate: "வெப்பம் அதிகரிக்க தொடங்குகிறது.",
+                crops: "எள், சோளம், பருத்தி",
+                images: ["sesame1.jpg", "sesame2.jpg", "sesame3.jpg"],
+                audio: "march.mp3"
+            },
+            {
+                monthIndex: 3,
+                climate: "வெப்ப காலம் அதிகமாகும்.",
+                crops: "பருத்தி, மக்காச்சோளம், எண்ணெய் செடிகள்",
+                images: ["cotton1.jpg", "cotton2.jpg", "cotton3.jpg"],
+                audio: "april.mp3"
+            },
+            {
+                monthIndex: 4,
+                climate: "சராசரியான வெப்பம் மற்றும் வறட்சியான காலம்.",
+                crops: "நிலக்கடலை, மக்காச்சோளம், காய்கறிகள்",
+                images: ["peanut1.jpg", "peanut2.jpg", "peanut3.jpg"],
+                audio: "may.mp3"
+            },
+            {
+                monthIndex: 5,
+                climate: "தென்மேற்கு பருவமழை தொடங்கும்.",
+                crops: "நெல், சோளம், பயறு வகைகள்",
+                images: ["rice1.jpg", "rice2.jpg", "rice3.jpg"],
+                audio: "june.mp3"
+            },
+            {
+                monthIndex: 6,
+                climate: "தென்மேற்கு பருவமழை மிதமானது.",
+                crops: "நெல், ஜவ்வரிசி, ஆழ்ந்த வேர்கடலை",
+                images: ["sago1.jpg", "sago2.jpg", "sago3.jpg"],
+                audio: "july.mp3"
+            },
+            {
+                monthIndex: 7,
+                climate: "சீரான மழை.",
+                crops: "பஞ்சு, காய்கறிகள், கம்பு",
+                images: ["millet1.jpg", "millet2.jpg", "millet3.jpg"],
+                audio: "august.mp3"
+            },
+            {
+                monthIndex: 8,
+                climate: "மழை குறைந்து, பருவ மாறும் காலம்.",
+                crops: "செம்பருத்தி, சோளம், கோதுமை",
+                images: ["sample17.jpg", "sample18.jpg", "sample19.jpg"],
+                audio: "audio8.mp3"
+            },
+            {
+                monthIndex: 9,
+                climate: "வடகிழக்கு பருவமழை தொடங்கும்.",
+                crops: "நெல், காய்கறிகள், பருப்பு",
+                images: ["sample12.jpg", "sample15.jpg", "sample16.jpg"],
+                audio: "audio9.mp3"
+            },
+            {
+                monthIndex: 10,
+                climate: "குளிர்ந்த மழைக்காலம்.",
+                crops: "காய்கறிகள், மிளகாய், இஞ்சி",
+                images: ["sample13.jpg", "sample12.jpg", "sample14.jpg"],
+                audio: "audio10.mp3"
+            },
+            {
+                monthIndex: 11,
+                climate: "சராசரி குளிர்ந்த காலநிலை.",
+                crops: "கோதுமை, சோளம், கீரை வகைகள்",
+                images: ["spinach1.jpg", "spinach2.jpg", "spinach3.jpg"],
+                audio: "december.mp3"
+            }
+        ];
+
+        function getTamilMonth() {
+            const today = new Date();
+            let tamilMonth = "";
+
+            for (let i = 0; i < tamilMonths.length; i++) {
+                const month = tamilMonths[i];
+                const startDate = new Date(today.getFullYear(), month.startMonth, month.startDay);
+                const nextMonth = tamilMonths[(i + 1) % tamilMonths.length];
+                const nextMonthDate = new Date(today.getFullYear(), nextMonth.startMonth, nextMonth.startDay);
+
+                if (today >= startDate && today < nextMonthDate) {
+                    tamilMonth = month.name;
+                    break;
+                }
+            }
+
+            return tamilMonth;
+        }
+
+        function showClimateAndCrops() {
+            document.getElementById("tamilMonth").innerText = `தற்போதைய தமிழ் மாதம்: ${getTamilMonth()}`;
+
+            const month = new Date().getMonth();
+            const monthInfo = monthData.find(m => m.monthIndex === month);
+
+            document.getElementById("climateCondition").innerText = monthInfo.climate;
+            document.getElementById("cropRecommendation").innerText = `பரிந்துரைப்பட்ட பயிர்கள்: ${monthInfo.crops}`;
+            document.getElementById("cropImage1").src = monthInfo.images[0];
+            document.getElementById("cropImage2").src = monthInfo.images[1];
+            document.getElementById("cropImage3").src = monthInfo.images[2];
+            document.getElementById("cropImage1").style.display = 'block';
+            document.getElementById("cropImage2").style.display = 'block';
+            document.getElementById("cropImage3").style.display = 'block';
+            document.getElementById("monthAudio").src = monthInfo.audio;
+        }
+
+        function playMonthAudio() {
+            document.getElementById("monthAudio").play();
+        }
+
+        showClimateAndCrops();
+    </script>
+</body>
+</html>

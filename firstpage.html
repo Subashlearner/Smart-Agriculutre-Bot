@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroBot</title>
+    <link rel="icon" href="E:/mini project/favicon.jpg" type="image/png">
+    <style>
+     
+        .container {
+            text-align: center;
+            margin-top: 20px;
+            padding: 0 10px;
+        }
+
+       
+         .left {
+            width: 100px;
+            height: 120px;
+            position: absolute;
+            top: 20px;
+            left: 80px;
+        }
+
+        .right {
+            top: 20px;
+            right: 90px;
+            width: 100px;
+            height: 100px;
+            position: absolute;
+        }
+
+       
+        .button {
+            display: flex;
+            height: 120px;
+            width: 120px;
+            border-radius: 50%;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin: 50px auto;
+        }
+
+ 
+
+        body {
+            margin: 0; 
+            height: 100vh; 
+            background-image: url('sample5.jpg'); 
+            background-size: cover;
+            background-position: center; 
+            background-repeat: no-repeat; 
+            image-rendering: crisp-edges;
+        }
+
+      
+        @media (max-width: 768px) {
+            
+            .container h1, .container h2 {
+                font-size: 1.5em;
+            }
+
+          
+            .button {
+                height: 80px;
+                width: 80px;
+                font-size: 18px;
+            }
+
+           
+            .right, .left {
+                width: 60px;
+                height: 60px;
+            }
+
+           
+        }
+
+        @media (max-width: 480px) {
+          
+            .container h1, .container h2 {
+                font-size: 1.2em;
+            }
+
+            .button {
+                height: 60px;
+                width: 60px;
+                font-size: 16px;
+            }
+
+        }
+    </style>
+</head>
+<body>
+
+  
+    <div class="container">
+        <h1>GOVERNMENT COLLEGE OF TECHNOLOGY-COIMBATORE</h1>
+        <h2>ELECTRONICS AND COMMUNICATION ENGINEERING</h2><br><br><br>
+        <h1>SMART INFORMATION AND MONITORING SYSTEM FOR FARMERS</h1>
+    </div>
+
+   
+    <img src="E:/mini project/departmentlogo.png" alt="Department Logo" class="right">
+    <img src="E:/mini project/Gctlogo.png" alt="GCT Logo" class="left">
+
+   
+    <button class="button" onclick="window.location.href='E:/mini project/mainpage.html'">Start</button>
+
+
+
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroBot - குறள் உள்ளீடு</title> 
+    <link rel="icon" href="favicon.jpg" type="image/png">
+    <style>
+        /* Page styling */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #e0f7e9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #1a6e2e;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px #aaa;
+        }
+
+        p {
+            font-size: 1.2em;
+            color: #555;
+            margin: 10px 0;
+        }
+
+        .listen-button {
+            width: 90px;
+            height: 90px;
+            margin-top: 20px;
+            cursor: pointer;
+            border-radius: 50%;
+            border: none;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .listen-button:hover {
+            transform: scale(1.15);
+            box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 1.3em;
+            color: #2c7a4b;
+            font-weight: bold;
+            background-color: #f0f8ff;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        audio {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>வரவேற்கிறோம் AgroBot</h1>
+    <p>உங்கள் கேள்விகளை இங்கே கேளுங்கள்.</p>
+    <img src="sample29.jpg" alt="Start Listening" class="listen-button" onclick="startListening()">
+    <p id="result">உங்கள் கேள்வி இங்கே காணப்படும்...</p>
+    <audio id="audioResponse"></audio>
+
+    <script>
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'ta-IN';
+
+        function startListening() {
+            recognition.start();
+            document.getElementById("result").innerText = "கேட்கப்படுகிறது...";
+        }
+
+        recognition.onresult = async function(event) {
+            const transcript = event.results[0][0].transcript;
+            document.getElementById("result").innerText = `நீங்கள் கேட்டது: ${transcript}`;
+            const englishQuery = await translateToEnglish(transcript);
+            await getAIResponse(englishQuery);
+        };
+
+        recognition.onerror = function(event) {
+            console.log("Speech recognition error:", event.error);
+            alert("குரல் புரியப்படவில்லை. மீண்டும் முயற்சிக்கவும்.");
+        };
+
+        async function translateToEnglish(tamilText) {
+            try {
+                const response = await fetch('https://api.mymemory.translated.net/get?q=' + encodeURIComponent(tamilText) + '&langpair=ta|en');
+                const data = await response.json();
+                return data.responseData.translatedText;
+            } catch (error) {
+                console.error('Translation error:', error);
+                alert("மொழி மாற்றத்திலும் பிழை ஏற்பட்டது.");
+                return tamilText; // Fallback
+            }
+        }
+
+        async function getAIResponse(query) {
+            try {
+                const response = await fetch('http://localhost:3000/query', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ question: query })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    const responseText = data.answer;
+                    document.getElementById("result").innerText = responseText;
+                    textToSpeech(responseText);
+                } else {
+                    console.error('Error fetching AI response:', response.statusText);
+                    alert("பதில் பெறுவதில் பிழை ஏற்பட்டது.");
+                }
+            } catch (error) {
+                console.error('Network error:', error);
+                alert("நெட்வொர்க் பிழை! மீண்டும் முயற்சிக்கவும்.");
+            }
+        }
+
+        function textToSpeech(text) {
+            const audioElement = document.getElementById("audioResponse");
+            const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=ta&client=tw-ob`;
+            audioElement.src = url;
+            audioElement.play().catch(function(error) {
+                console.log("Audio playback failed:", error);
+                alert("ஆடியோ ஆடுவதில் பிழை! தயவுசெய்து மீண்டும் முயற்சிக்கவும்.");
+            });
+        }
+    </script>
+</body>
+</html>
